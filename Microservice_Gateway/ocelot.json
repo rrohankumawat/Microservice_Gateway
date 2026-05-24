@@ -11,7 +11,15 @@
         }
       ],
       "UpstreamPathTemplate": "/login",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Limit": 5,
+        "Period": "30s",
+        "ClientIdHeader" :  "X-Client-Id",
+        "QuotaExceededMessage": "Too Many Requests, Please Try Again!",
+        "HttpStatusCode" : 429
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Auth/Register",
@@ -23,7 +31,15 @@
         }
       ],
       "UpstreamPathTemplate": "/register",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Limit": 3,
+        "Period": "1m",
+        "ClientIdHeader": "X-Client-Id",
+        "QuotaExceededMessage": "Too Many Requests, Please Try Again!",
+        "HttpStatusCode": 429
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Orders/CreateOrders",
@@ -36,6 +52,14 @@
       ],
       "UpstreamPathTemplate": "/CreateOrders",
       "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Limit": 5,
+        "Period": "30s",
+        "ClientIdHeader": "X-Client-Id",
+        "QuotaExceededMessage": "Too Many Requests, Please Try Again!",
+        "HttpStatusCode": 429
+      },
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -52,6 +76,14 @@
       ],
       "UpstreamPathTemplate": "/GetOrders",
       "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Limit": 5,
+        "Period": "30s",
+        "ClientIdHeader": "X-Client-Id",
+        "QuotaExceededMessage": "Too Many Requests, Please Try Again!",
+        "HttpStatusCode": 429
+      },
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -60,6 +92,12 @@
 
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7074"
+    "BaseUrl": "https://localhost:7074",
+    "RateLimitOptions": {
+      "DisableRateLimitHeader": false,     
+      "ClientIdHeader": "X-Client-Id",
+      "QuotaExceededMessage": "Too Many Requests, Please Try Again!",
+      "HttpStatusCode": 429
+    }
   }
 }
