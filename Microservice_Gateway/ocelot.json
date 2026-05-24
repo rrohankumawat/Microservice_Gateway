@@ -78,8 +78,8 @@
       "UpstreamHttpMethod": [ "Get" ],
       "RateLimitOptions": {
         "EnableRateLimiting": true,
-        "Limit": 5,
-        "Period": "30s",
+        "Limit": 20,
+        "Period": "60s",
         "ClientIdHeader": "X-Client-Id",
         "QuotaExceededMessage": "Too Many Requests, Please Try Again!",
         "HttpStatusCode": 429

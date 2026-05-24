@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using OrderServices.Data;
 using OrderServices.Dto;
 
@@ -10,6 +11,7 @@ namespace OrderServices.Controllers
     [ApiController]
     public class OrdersController(AppDbContext _context) : ControllerBase
     {
+        [EnableRateLimiting("order-policy")]
         [Authorize]
         [HttpGet("GetOrders")]
         public IActionResult GetOrders()

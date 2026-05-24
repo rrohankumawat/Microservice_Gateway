@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OrderServices.Data;
@@ -25,6 +26,27 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
     };
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("order-policy", opt =>
+    {
+        opt.PermitLimit = 3;
+        opt.Window = TimeSpan.FromSeconds(30);
+        opt.QueueLimit = 2;
+    });
+
+
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = 429;
+        await context.HttpContext.Response.WriteAsJsonAsync(new
+        {
+            message = "Too many requests. Please try again later.",
+            succes = false
+        });
+    };
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -37,7 +59,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
